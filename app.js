@@ -7,7 +7,7 @@ let petDrink = new Audio("sounds/drink.wav");
 let petFeed = new Audio("sounds/feed.wav");
 let petMeow = new Audio("sounds/sleep.wav");
 let petWoof = new Audio("sounds/woof.wav");
-let power = new Audio("sounds/power.wav");
+let intro = new Audio("sounds/intro.mp3");
 
 //Music
 
@@ -23,14 +23,15 @@ let thirstValue = document.getElementById("thirstValue");
 let boredomValue = document.getElementById("boredomValue");
 let petNameType = document.getElementById("petNameType")
 
-
+let imageScreen = document.getElementById("disppear")
 
 let min = 5;
+let mid = 8;
 let max = 25;
 
 // // different number range for creating cyberpet
 let createMin = 30;
-let createMax = 70;
+let createMax = 65;
 
 function randNumber (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -63,17 +64,17 @@ class Cyberpet{
         // what do we want eat to do
         this._hunger += randNumber(min, max);
         this._thirst -= (min);
-        this._boredom -= (min);
+        this._boredom -= (mid);
         logOutput();
     }
     drink(){
         this._hunger -= (min);
         this._thirst += randNumber(min, max);
-        this._boredom -= (min);
+        this._boredom -= (mid);
         logOutput();
     }
     fun(){
-        this._hunger -= (min);
+        this._hunger -= (mid);
         this._thirst -= (min);
         this._boredom += randNumber(min, max);
         logOutput();
@@ -82,7 +83,11 @@ class Cyberpet{
 class Cat extends Cyberpet {
     constructor(name, meow){
         super(name);
+        this._imageSrc = "images/cat/";
         this._meow = meow;
+    }
+    get imageSrc(){
+        return this._imageSrc;
     }
     get meow(){
         return this._meow;
@@ -98,26 +103,33 @@ class Dog extends Cyberpet{
     constructor (name,woof){
         super(name);
         this._woof = woof;
-    }
-    get woof(){
-        return this._woof;
-    }
-    speak(){
+        this._imageSrc = "images/dog/";
+        }
+        get imageSrc(){
+        return this._imageSrc;
+        }
+        get woof(){
+            return this._woof;
+        }
+        speak(){
         petWoof.play();
         petWoof.currentTime = 0;
         console.log("dog is barking mad")
     }
 }
-
 class Rabbit extends Cyberpet{
     constructor (name,woof){ // change woof
         super(name);
         this._woof = woof;
-    }
-    get woof(){
+        this._imageSrc = "images/rabbit/";
+        }
+        get imageSrc(){
+        return this._imageSrc;
+        }
+        get woof(){
         return this._woof;
-    }
-    speak(){
+        }
+        speak(){
         petWoof.play();
         petWoof.currentTime = 0;
         comsole.log("dog is barking mad")
@@ -132,16 +144,20 @@ let myPetCreated = 0;
 
 function chooseAction(){
     if(action == "c"){
+        
+        intro.play()
         myPetCreate();
     }
     if  (action == "p"){
         myPet.fun();
         petPlay.play();
+        imageScreen.src = myPet.imageSrc + "sleep.png"
         petPlay.currentTime = 0;
     }
     else if(action == "e"){
         myPet.eat();
         petFeed.play();
+        imageScreen.src = myPet.imageSrc + "fat.png"
         petFeed.currentTime = 0;
     }
     else if(action == "d"){
@@ -155,29 +171,42 @@ function chooseAction(){
     action = "";
 }
 
+
+
 function myPetCreate(){
     if(myPetCreated == 0){
-        petType = prompt("Select Cyberpet Type: 1 for a Dog, 2 for a Cat, Any other key for a Rabbit");
+        petType = prompt("Please Select Cyberpet Type: 1 for a Dog. 2 for a Cat. Press Any other key for a Rabbit");
         if(petType == 1){
+            // bgm1.play();
+            
             pet = "Dog";
             myPet = new Dog(petName, pet);
         }
         else if(petType == 2){
+            // bgm2.play();
             pet = "Cat";
             myPet = new Cat(petName, pet);
+            // imageSrc = "images/cat/"
         }
         else{
+            // bgm3.play();
             pet = "Rabbit";
             myPet = new Rabbit(petName, pet);
         }
         console.log(`pet type is ${petType}`);
         console.log(`pet is a ${pet}`);
         
+    
         petName = prompt(`Please name your ${pet}`)
-        
+        console.log(imageScreen.src)
+
         console.log(`starting hunger is ${myPet.hunger}`);
         petNameType.textContent = `${petName} the ${pet}`
-        logOutput()    }
+        imageScreen.src = myPet.imageSrc + "main.png"
+        logOutput()    
+
+    
+    }
     else{
         console.log(`You have already created a pet named ${petName}`);
     }
@@ -229,10 +258,10 @@ function typeWriter() {
   }
 }
 
-let element = document.getElementById("disappear");
-element.remove();
+// let element = document.getElementById("disappear");
+// element.remove();
 
-oc
+
 
 
 
@@ -253,4 +282,3 @@ oc
 //     action = prompt(`What would you like to do?:\np for play, e to feed, d to give a drink.\nOR any other key to end the game`)
 //     chooseAction()
 // }ument.getElementById("disappear");
-element.remove();
