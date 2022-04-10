@@ -25,6 +25,12 @@ let petNameType = document.getElementById("petNameType")
 
 let imageScreen = document.getElementById("disppear")
 
+document.addEventListener("click", (event) => {
+    btnClick = (event.target).id;
+    action = btnClick
+    chooseAction()
+});
+
 let min = 5;
 let mid = 8;
 let max = 25;
@@ -204,8 +210,6 @@ function myPetCreate(){
         petNameType.textContent = `${petName} the ${pet}`
         imageScreen.src = myPet.imageSrc + "main.png"
         logOutput()    
-
-    
     }
     else{
         console.log(`You have already created a pet named ${petName}`);
@@ -245,6 +249,8 @@ document.addEventListener("keydown", (event) => {
     console.log(action);
     chooseAction();
 })
+
+
 
 let i = 0;
 let txt = "Press C Key to START";
