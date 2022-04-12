@@ -27,7 +27,7 @@ let petNameType = document.getElementById("petNameType")
 let imageScreen = document.getElementById("screen")
 
 
-
+//
 document.addEventListener("click", (event) => {
     action = (event.target).id;
     chooseAction()
