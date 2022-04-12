@@ -5,9 +5,10 @@
 let petPlay = new Audio("sounds/play.wav");
 let petDrink = new Audio("sounds/drink.wav");
 let petFeed = new Audio("sounds/feed.wav");
-let petMeow = new Audio("sounds/sleep.wav");
-let petWoof = new Audio("sounds/woof.wav");
+let petMeow = new Audio("sounds/meow.wav");
+let petWoof = new Audio("sounds/howl.wav");
 let intro = new Audio("sounds/intro.mp3");
+let petLevel = new Audio("sounds/levelup.mp3");
 
 //Music
 
@@ -23,13 +24,23 @@ let thirstValue = document.getElementById("thirstValue");
 let boredomValue = document.getElementById("boredomValue");
 let petNameType = document.getElementById("petNameType")
 
-let imageScreen = document.getElementById("disppear")
+let imageScreen = document.getElementById("screen")
+
+
 
 document.addEventListener("click", (event) => {
-    btnClick = (event.target).id;
-    action = btnClick
+    action = (event.target).id;
     chooseAction()
 });
+
+function runPowerOn(){
+    imageScreen.src = "images/purple.gif"
+    document.getElementById("intro").textContent = "Press C Key to START"
+}
+
+function refresh(){
+    location.reload()
+}
 
 let min = 5;
 let mid = 8;
@@ -100,6 +111,7 @@ class Cat extends Cyberpet {
     }
     speak(){
         petMeow.play();
+        petMeow.volume = 0.3;
         petMeow.currentTime = 0;
         console.log("cat says meow");
         // textContent = "MEOWWWW!"
@@ -119,25 +131,27 @@ class Dog extends Cyberpet{
         }
         speak(){
         petWoof.play();
+        petWoof.volume = 0.3;
         petWoof.currentTime = 0;
         console.log("dog is barking mad")
     }
 }
 class Rabbit extends Cyberpet{
-    constructor (name,woof){ // change woof
+    constructor (name,levelup){ // change woof
         super(name);
-        this._woof = woof;
+        this._levelup = levelup;
         this._imageSrc = "images/rabbit/";
         }
         get imageSrc(){
         return this._imageSrc;
         }
-        get woof(){
-        return this._woof;
+        get levelup(){
+        return this._levelup;
         }
         speak(){
-        petWoof.play();
-        petWoof.currentTime = 0;
+        petLevel.play();
+        petLevel.volume = 0.03 ;       
+        petLevel.currentTime = 0;
         comsole.log("dog is barking mad")
     }
 }
@@ -150,52 +164,60 @@ let myPetCreated = 0;
 
 function chooseAction(){
     if(action == "c"){
-        
-        intro.play()
+        intro.play();
+        intro.volume = 0.2;
         myPetCreate();
     }
     if  (action == "p"){
         myPet.fun();
         petPlay.play();
-        imageScreen.src = myPet.imageSrc + "sleep.png"
+        petPlay.volume = 0.3;
         petPlay.currentTime = 0;
+        imageScreen.src = myPet.imageSrc + "play.png";
     }
     else if(action == "e"){
         myPet.eat();
         petFeed.play();
-        imageScreen.src = myPet.imageSrc + "fat.png"
+        petFeed.volume = 0.3;
         petFeed.currentTime = 0;
+        imageScreen.src = myPet.imageSrc + "eat.png";
+        button.style.color = "red";
+        
     }
     else if(action == "d"){
         myPet.drink();
         petDrink.play();
+        petDrink.volume = 0.3;
         petDrink.currentTime = 0;
+        imageScreen.src = myPet.imageSrc + "drink.png";
     }
     else if(action == "s"){
         myPet.speak();
+        imageScreen.src = myPet.imageSrc + "speak.png";
     }
     action = "";
 }
 
-
-
 function myPetCreate(){
     if(myPetCreated == 0){
-        petType = prompt("Please Select Cyberpet Type: 1 for a Dog. 2 for a Cat. Press Any other key for a Rabbit");
+        petType = prompt("Please Select Cyberpet Type: 1 for a Dog. 2 for a Cat.                    Press ANY other key for a Rabbit.");
         if(petType == 1){
-            // bgm1.play();
+            bgm1.play();
+            bgm1.volume = 0.2;
             
             pet = "Dog";
             myPet = new Dog(petName, pet);
         }
         else if(petType == 2){
-            // bgm2.play();
+            bgm2.play();
+            bgm2.volume = 0.2;
             pet = "Cat";
             myPet = new Cat(petName, pet);
             // imageSrc = "images/cat/"
         }
         else{
-            // bgm3.play();
+            bgm3.play();
+            bgm3.volume = 0.2;
             pet = "Rabbit";
             myPet = new Rabbit(petName, pet);
         }
@@ -209,6 +231,7 @@ function myPetCreate(){
         console.log(`starting hunger is ${myPet.hunger}`);
         petNameType.textContent = `${petName} the ${pet}`
         imageScreen.src = myPet.imageSrc + "main.png"
+        document.getElementById("intro").textContent = ""
         logOutput()    
     }
     else{
@@ -248,22 +271,29 @@ document.addEventListener("keydown", (event) => {
     action = event.key;
     console.log(action);
     chooseAction();
-})
-
-
+});
 
 let i = 0;
 let txt = "Press C Key to START";
 const speed = 50;
-
+const hide = 1000
 function typeWriter() {
   if (i < txt.length) {
     document.getElementById("intro").innerHTML += txt.charAt(i);
     i++;
-    setTimeout(typeWriter, speed);
-  }
+    setTimeout(typeWriter, speed)
+    
+    }
 }
 
+// close the div in 5 secs
+window.setTimeout(txt, 5000);
+
+function txtDisappear(){
+document.getElementById(txt).style.display=" none";
+}
+
+// time in millisecond for as long as you like
 // let element = document.getElementById("disappear");
 // element.remove();
 
